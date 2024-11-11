@@ -9,6 +9,10 @@ class Slot
 
     public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to, int $slots)
     {
+        if ($from >= $to) {
+            throw new \DomainException();
+        }
+
         $this->reservations = [];
         $this->slots = $slots;
     }

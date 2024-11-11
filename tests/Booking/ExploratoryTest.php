@@ -36,6 +36,18 @@ final class ExploratoryTest extends TestCase
         $slot->book('blah5');
     }
 
+    public function testSlotCannotEndBeforeItsBeginning()
+    {
+        self::expectException(\DomainException::class);
+        new Slot(self::dateUntil(), self::dateFrom(), 0);
+    }
+
+    public function testSlotMustHaveSomeDuration()
+    {
+        self::expectException(\DomainException::class);
+        new Slot(self::dateFrom(), self::dateFrom(), 0);
+    }
+
     public static function dateFrom(): \DateTimeImmutable
     {
         return new \DateTimeImmutable('2024-11-11 15:00');
