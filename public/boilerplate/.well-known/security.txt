@@ -1,0 +1,7 @@
+Contact: mailto:sekurs@miedzybrodzki.net
+
+# I tend to forget various expiration dates. All data in this file is likely still up-to-date even if it says otherwise.
+Expires: 2026-11-11T09:00:00.000Z
+
+# I will still welcome message in any other language and read it using a translator
+Preferred-Languages: en,pl

@@ -8,11 +8,12 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/aliveness')]
+#[Route('/alive')]
 #[AsController]
 final class Alive
 {
     public function __invoke(): JsonResponse
     {
-        return new JsonResponse(['alive' => true]);
+        return new JsonResponse(['alive' => true], headers: []);
     }
 }

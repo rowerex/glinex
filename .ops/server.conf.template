@@ -26,4 +26,33 @@ server {
     location ~ \.php$ {
         return 404;
     }
+
+    location = /manifest.json {
+        return 302 http://${REDIRECT_DOMAIN}/app.webmanifest;
+    }
+
+    location = /app.webmanifest {
+        root /app/public/boilerplate;
+        expires 24h;
+        add_header Cache-Control "public";
+        default_type "application/manifest+json";
+        log_not_found off;
+        access_log off;
+    }
+
+    location ~* \/(robots\.txt|\.well-known\/security\.txt)$ {
+        root /app/public/boilerplate;
+        expires 24h;
+        add_header Cache-Control "public";
+        log_not_found off;
+        access_log off;
+    }
+
+    location ~* \/(favicon.ico|favicon\-(.*)\.png|android\-(.*)\.png|apple\-touch\-icon.png) {
+        root /app/public/boilerplate;
+        expires 60m;
+        add_header Cache-Control "public";
+        log_not_found off;
+        access_log off;
+    }
 }

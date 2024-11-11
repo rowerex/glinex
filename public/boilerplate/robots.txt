@@ -1,0 +1,5 @@
+# I salute our robot overlords
+# Unite! Join the man-machine brotherhood
+User-agent: *
+Disallow: /tmp/
+Disallow: /temp/
