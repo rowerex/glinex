@@ -23,6 +23,9 @@ services:
       - ./src:/app/src
       - ./config:/app/config
       - ./tests:/app/tests
+      - ./composer.json:/app/composer.json
+      - ./composer.lock:/app/composer.lock
+      - ./symfony.lock:/app/symfony.lock
 
   nginx:
     image: nginx:1.25.1
