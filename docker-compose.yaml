@@ -37,18 +37,18 @@ services:
       - APP_PORT=9000
       - REDIRECT_DOMAIN=localhost:8765
 
-  webapp-frankenphp:
-    image: ghcr.io/wojciechem/legacy:dev-local-frankenphp
-    build:
-      dockerfile: Dockerfile
-      context: .
-      target: test
-      args:
-        - BASE_IMAGE=dunglas/frankenphp:main
-#    profiles:
-#      - dev
-    ports:
-      - target: 80
-        published: 8766
-        protocol: tcp
+#  webapp-frankenphp:
+#    image: ghcr.io/wojciechem/legacy:dev-local-frankenphp
+#    build:
+#      dockerfile: Dockerfile
+#      context: .
+#      target: test
+#      args:
+#        - BASE_IMAGE=dunglas/frankenphp:main
+##    profiles:
+##      - dev
+#    ports:
+#      - target: 80
+#        published: 8766
+#        protocol: tcp
 
