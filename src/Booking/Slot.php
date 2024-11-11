@@ -52,4 +52,9 @@ class Slot
     {
         return $date->modify('+1 day') >= $this->from;
     }
+
+    public function isOpenForBooking(\DateTimeImmutable $date): bool
+    {
+        return $this->countReservations() < $this->slots && !$this->isAfterReservationsCutoff($date);
+    }
 }
