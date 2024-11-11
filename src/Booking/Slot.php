@@ -5,13 +5,20 @@ namespace App\Booking;
 class Slot
 {
     private array $reservations;
-    public function __construct(\DateTimeImmutable $param, \DateTimeImmutable $param1, int $int)
+    private readonly int $slots;
+
+    public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to, int $slots)
     {
         $this->reservations = [];
+        $this->slots = $slots;
     }
 
     public function book(string $string): void
     {
+        if ($this->countReservations() === $this->slots) {
+            throw new \DomainException();
+        }
+
         $this->reservations[] = $string;
     }
 
