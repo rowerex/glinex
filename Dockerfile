@@ -47,6 +47,7 @@ COPY --link --chown=$UID:$GID --from=test-vendor $DIR/vendor ./vendor
 COPY --link --chown=$UID:$GID --from=test-vendor $DIR/composer.lock .
 COPY --link --chown=$UID:$GID --from=test-vendor $DIR/symfony.lock .
 COPY --link --chown=$UID:$GID --from=test-vendor $DIR/composer.json .
+COPY --from=composer/composer:2-bin /composer /usr/local/bin/composer
 RUN --mount=type=bind,from=composer/composer:2.2.21-bin,source=/composer,target=/usr/local/bin/composer \
     --mount=type=cache,id=$(PROJECT)-composer-cache,target=/var/www/.composer,id=$UID,gid=$GID \
     composer install
