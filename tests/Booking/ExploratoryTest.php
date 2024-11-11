@@ -7,14 +7,24 @@ use PHPUnit\Framework\TestCase;
 
 final class ExploratoryTest extends TestCase
 {
+    private static function latestValidDateForCancel()
+    {
+        return self::latestValidDateForBooking();
+    }
+
     private static function dateTooLateForBooking()
     {
         return new \DateTimeImmutable('2024-11-10 15:00:00');
     }
 
-    private static function validDateForBooking()
+    private static function latestValidDateForBooking()
     {
         return new \DateTimeImmutable('2024-11-10 14:59:59');
+    }
+
+    private static function validDateForBooking()
+    {
+        return new \DateTimeImmutable('2024-11-07 20:00:00');
     }
 
     public function testCanBookASlot()
@@ -53,6 +63,37 @@ final class ExploratoryTest extends TestCase
         $this->expectException(\DomainException::class);
 
         $slot->book('blah', self::dateTooLateForBooking());
+    }
+
+    public function testCanCancelBooking(): void
+    {
+        $slot = new Slot(
+            $this->dateFrom(),
+            $this->dateUntil(),
+            4
+        );
+
+        $slot->book('blah', self::validDateForBooking());
+        $slot->book('gah', self::validDateForBooking());
+
+        $slot->cancelBooking('gah', self::latestValidDateForCancel());
+
+        self::assertEquals(1, $slot->countReservations());
+    }
+
+    public function testCanNotCancelBookingTooLate(): void
+    {
+        $slot = new Slot(
+            $this->dateFrom(),
+            $this->dateUntil(),
+            4
+        );
+
+        $slot->book('blah', self::validDateForBooking());
+
+        self::expectException(\DomainException::class);
+
+        $slot->cancelBooking('gah', self::dateTooLateForBooking());
     }
 
     public function testSlotCannotEndBeforeItsBeginning()

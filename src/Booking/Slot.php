@@ -27,7 +27,7 @@ class Slot
             throw new \DomainException();
         }
 
-        if ($dateOfBooking->modify('+1 day') >= $this->from) {
+        if ($this->isAfterReservationsCutoff($dateOfBooking)) {
             throw new \DomainException();
         }
 
@@ -37,5 +37,19 @@ class Slot
     public function countReservations(): int
     {
         return count($this->reservations);
+    }
+
+    public function cancelBooking(string $string, \DateTimeImmutable $now)
+    {
+        if ($this->isAfterReservationsCutoff($now)) {
+            throw new \DomainException();
+        }
+
+        $this->reservations = array_filter($this->reservations, function ($v) use ($string) { return $v === $string; });
+    }
+
+    public function isAfterReservationsCutoff(\DateTimeImmutable $date): bool
+    {
+        return $date->modify('+1 day') >= $this->from;
     }
 }
