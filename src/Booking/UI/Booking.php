@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/booking')]
 #[AsController]
-final class BookingController
+final class Booking
 {
     public function __invoke(): Response
     {

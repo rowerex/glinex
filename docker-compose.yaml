@@ -21,6 +21,7 @@ services:
     volumes:
       - ./vendor:/app/vendor
       - ./src:/app/src
+      - ./config:/app/config
       - ./tests:/app/tests
 
   nginx:

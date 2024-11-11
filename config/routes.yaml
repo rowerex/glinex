@@ -3,7 +3,7 @@ booking:
         path: ../src/Booking/UI/
         namespace: App\Booking\UI
     type: attribute
-    prefix: '/booking'
+    prefix: ''
 
 operations:
     resource:
