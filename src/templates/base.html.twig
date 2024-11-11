@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Glinex Booking{% endblock %}</title>
+</head>
+<body>
+<h1>{% block header %}Header{% endblock %}</h1>
+{% block navigation %}
+<nav>
+    <ul>
+        <li><a href="{{ path('booking') }}">Booking</a></li>
+    </ul>
+</nav>
+{% endblock %}
+{% block body %}
+{% endblock %}
+</body>
+</html>

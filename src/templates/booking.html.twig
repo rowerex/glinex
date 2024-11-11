@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+{% block header %} Sessions {% endblock %}
+{% block body %}
+    {% for session in sessions %}
+    <p>{{ session.from|date("Y-m-d H:i") }} {{ session.to|date("Y-m-d H:i") }}</p>
+    {% endfor %}
+{% endblock %}

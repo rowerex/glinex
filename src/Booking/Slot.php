@@ -6,8 +6,8 @@ class Slot
 {
     private array $reservations;
     private readonly int $slots;
-    private \DateTimeImmutable $from;
-    private \DateTimeImmutable $to;
+    public readonly \DateTimeImmutable $from;
+    public readonly \DateTimeImmutable $to;
 
     public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to, int $slots)
     {
