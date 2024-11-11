@@ -2,6 +2,14 @@
 {% block header %} Sessions {% endblock %}
 {% block body %}
     {% for session in sessions %}
-    <p>{{ session.from|date("Y-m-d H:i") }} {{ session.to|date("Y-m-d H:i") }}</p>
+    <div>{{ session.from|date("Y-m-d H:i") }} {{ session.to|date("Y-m-d H:i") }} Free slots: {{ session.slots - session.countReservations }}/{{ session.slots }}
+        {% if session.isOpenForBookingNow %}
+            <form action="{{ path('bookForASession',{sessionId: session.id}) ) }}" method="POST">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email">
+                <input type="submit" value="Book">
+            </form>
+        {% endif %}
+    </div>
     {% endfor %}
 {% endblock %}

@@ -2,19 +2,23 @@
 
 namespace App\Booking;
 
+use Symfony\Component\Uid\Ulid;
+
 class Slot
 {
     private array $reservations;
-    private readonly int $slots;
+    public readonly Ulid $id;
+    public readonly int $slots;
     public readonly \DateTimeImmutable $from;
     public readonly \DateTimeImmutable $to;
 
-    public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to, int $slots)
+    public function __construct(Ulid $id, \DateTimeImmutable $from, \DateTimeImmutable $to, int $slots)
     {
         if ($from >= $to) {
             throw new \DomainException();
         }
 
+        $this->id = $id;
         $this->reservations = [];
         $this->slots = $slots;
         $this->from = $from;
@@ -56,5 +60,9 @@ class Slot
     public function isOpenForBooking(\DateTimeImmutable $date): bool
     {
         return $this->countReservations() < $this->slots && !$this->isAfterReservationsCutoff($date);
+    }
+    public function isOpenForBookingNow(): bool
+    {
+        return $this->isOpenForBooking(new \DateTimeImmutable());
     }
 }

@@ -3,17 +3,15 @@
 namespace App\Tests\Booking;
 
 use App\Booking\Slot;
+use App\Tests\Booking\Mother\SlotMother;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Uid\Ulid;
 
 final class SlotReservationsTest extends TestCase
 {
     public function testCanBookASlot()
     {
-        $slot = new Slot(
-            $this->dateFrom(),
-            $this->dateUntil(),
-            4
-        );
+        $slot = SlotMother::withNumberOfSlots(4);
 
         $slot->book('blah', self::validDateForBooking());
         $slot->book('gah', self::validDateForBooking());
@@ -25,7 +23,7 @@ final class SlotReservationsTest extends TestCase
 
     public function testCanNotBookOverLimit(): void
     {
-        $slot = new Slot(self::dateFrom(), self::dateUntil(), 4);
+        $slot = SlotMother::withNumberOfSlots(4);
 
         $this->expectException(\DomainException::class);
 
@@ -38,19 +36,20 @@ final class SlotReservationsTest extends TestCase
 
     public function testCanNotBookLate(): void
     {
-        $slot = new Slot(self::dateFrom(), self::dateUntil(), 1);
+        $slot = SlotMother::withDates(self::dateFrom(), self::dateUntil());
 
         $this->expectException(\DomainException::class);
 
         $slot->book('blah', self::dateTooLateForBooking());
     }
 
-    public function testCanCancelBooking(): void
+    public function testCanCancelBookingBeforeCutoffDate(): void
     {
         $slot = new Slot(
+            new Ulid(),
             $this->dateFrom(),
             $this->dateUntil(),
-            4
+            4,
         );
 
         $slot->book('blah', self::validDateForBooking());
@@ -64,9 +63,10 @@ final class SlotReservationsTest extends TestCase
     public function testCanNotCancelBookingTooLate(): void
     {
         $slot = new Slot(
+            new Ulid(),
             $this->dateFrom(),
             $this->dateUntil(),
-            4
+            4,
         );
 
         $slot->book('blah', self::validDateForBooking());
@@ -79,21 +79,21 @@ final class SlotReservationsTest extends TestCase
     public function testSlotCannotEndBeforeItsBeginning()
     {
         self::expectException(\DomainException::class);
-        new Slot(self::dateUntil(), self::dateFrom(), 0);
+        new Slot(new Ulid(), self::dateUntil(), self::dateFrom(), 0);
     }
 
     public function testSlotMustHaveSomeDuration()
     {
         self::expectException(\DomainException::class);
-        new Slot(self::dateFrom(), self::dateFrom(), 0);
+        new Slot(new Ulid(), self::dateFrom(), self::dateFrom(), 0);
     }
 
     public function testIsOpenForBooking(): void
     {
-        $slot = new Slot(self::dateFrom(), self::dateUntil(), 1);
+        $slot = new Slot(new Ulid(), self::dateFrom(), self::dateUntil(), 1);
         self::assertTrue($slot->isOpenForBooking(self::validDateForBooking()));
 
-        $slot = new Slot(self::dateFrom(), self::dateUntil(), 3);
+        $slot = new Slot(new Ulid(), self::dateFrom(), self::dateUntil(), 3);
         $slot->book('meh', self::validDateForBooking());
         $slot->book('deh', self::validDateForBooking());
         self::assertTrue($slot->isOpenForBooking(self::validDateForBooking()));
@@ -101,18 +101,18 @@ final class SlotReservationsTest extends TestCase
 
     public function testIsClosedForBookingAfterCutoffDate(): void
     {
-        $slot = new Slot(self::dateFrom(), self::dateUntil(), 1);
+        $slot = new Slot(new Ulid(), self::dateFrom(), self::dateUntil(), 1);
         self::assertFalse($slot->isOpenForBooking(self::dateTooLateForBooking()));
     }
 
     public function testIsClosedForBookingWhenSlotsFull(): void
     {
-        $slot = new Slot(self::dateFrom(), self::dateUntil(), 1);
+        $slot = new Slot(new Ulid(), self::dateFrom(), self::dateUntil(), 1);
 
         $slot->book('meh', self::validDateForBooking());
         self::assertFalse($slot->isOpenForBooking(self::validDateForBooking()));
 
-        $slot = new Slot(self::dateFrom(), self::dateUntil(), 3);
+        $slot = new Slot(new Ulid(), self::dateFrom(), self::dateUntil(), 3);
 
         $slot->book('meh', self::validDateForBooking());
         $slot->book('deh', self::validDateForBooking());
@@ -122,7 +122,7 @@ final class SlotReservationsTest extends TestCase
 
     public function testIsClosedForBookingAfterCutoffAndFullyBooked()
     {
-        $slot = new Slot(self::dateFrom(), self::dateUntil(), 3);
+        $slot = new Slot(new Ulid(), self::dateFrom(), self::dateUntil(), 3);
 
         $slot->book('meh', self::validDateForBooking());
         $slot->book('deh', self::validDateForBooking());

@@ -21,21 +21,22 @@ final class Booking
     {
         $sessions = [
             new Slot(
-                new \DateTimeImmutable('2020-01-01 12:00'),
-                new \DateTimeImmutable('2020-01-01 14:00'),
+                new \DateTimeImmutable('2025-01-01 12:00'),
+                new \DateTimeImmutable('2025-01-01 14:00'),
                 3,
             ),
             new Slot(
-                new \DateTimeImmutable('2020-01-02 12:00'),
-                new \DateTimeImmutable('2020-01-02 14:00'),
+                new \DateTimeImmutable('2025-01-02 12:00'),
+                new \DateTimeImmutable('2025-01-02 14:00'),
                 3,
             ),
             new Slot(
-                new \DateTimeImmutable('2020-01-02 14:00'),
-                new \DateTimeImmutable('2020-01-02 16:00'),
+                new \DateTimeImmutable('2025-01-02 14:00'),
+                new \DateTimeImmutable('2025-01-02 16:00'),
                 3,
             ),
         ];
+
         return new Response($this->twig->render('booking.html.twig', ['sessions' => $sessions]));
     }
 }
