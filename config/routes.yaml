@@ -1,3 +1,10 @@
+booking:
+    resource:
+        path: ../src/Booking/UI/
+        namespace: App\Booking\UI
+    type: attribute
+    prefix: '/booking'
+
 operations:
     resource:
         path: ../src/Operations/UI/
