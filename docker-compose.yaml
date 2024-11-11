@@ -21,6 +21,7 @@ services:
     volumes:
       - ./vendor:/app/vendor
       - ./src:/app/src
+      - ./tests:/app/tests
 
   nginx:
     image: nginx:1.25.1
